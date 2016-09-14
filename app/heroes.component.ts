@@ -10,15 +10,17 @@ import { HeroService }         from './hero.service';
   styleUrls:  ['app/heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
+  errorMessage: string;
   heroes: Hero[];
   selectedHero: Hero;
 
   constructor(private heroService: HeroService, private router: Router) { }
 
   getHeroes(): void {
-    this.heroService
-        .getHeroes()
-        .then(heroes => this.heroes = heroes);
+    this.heroService.getHeroes()
+                     .subscribe(
+                       heroes => this.heroes = heroes,
+                       error =>  this.errorMessage = <any>error);
   }
 
   add(name: string): void {

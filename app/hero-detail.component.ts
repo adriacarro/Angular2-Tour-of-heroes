@@ -15,10 +15,10 @@ export class HeroDetailComponent implements OnInit {
   constructor(private heroService: HeroService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.params.forEach((params: Params) => {
+    this.route.params.subscribe(params => {
       let id = +params['id'];
       this.heroService.getHero(id)
-        .then(hero => this.hero = hero);
+        .subscribe(response => this.hero = response);
     });
   }
 
