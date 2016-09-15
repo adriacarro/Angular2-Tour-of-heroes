@@ -18,16 +18,14 @@ export class HeroesComponent implements OnInit {
 
   getHeroes(): void {
     this.heroService.getHeroes()
-                     .subscribe(
-                       heroes => this.heroes = heroes,
-                       error =>  this.errorMessage = <any>error);
+      .subscribe(heroes => this.heroes = heroes, error =>  this.errorMessage = <any>error);
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
     this.heroService.create(name)
-      .then(hero => {
+      .subscribe(hero => {
         this.heroes.push(hero);
         this.selectedHero = null;
       });
@@ -36,7 +34,7 @@ export class HeroesComponent implements OnInit {
   delete(hero: Hero): void {
     this.heroService
         .delete(hero.id)
-        .then(() => {
+        .subscribe(() => {
           this.heroes = this.heroes.filter(h => h !== hero);
           if (this.selectedHero === hero) { this.selectedHero = null; }
         });

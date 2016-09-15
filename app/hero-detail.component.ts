@@ -18,13 +18,16 @@ export class HeroDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       let id = +params['id'];
       this.heroService.getHero(id)
-        .subscribe(response => this.hero = response);
+        .subscribe(hero => this.hero = hero);
     });
   }
 
   save(): void {
     this.heroService.update(this.hero)
-      .then(this.goBack);
+      .subscribe(hero => {
+        this.hero = hero;
+        this.goBack;
+      });
   }
 
   goBack(): void {

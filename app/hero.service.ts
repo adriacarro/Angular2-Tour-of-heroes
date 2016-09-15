@@ -7,7 +7,7 @@ import { Observable }     from 'rxjs/Observable';
 @Injectable()
 export class HeroService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  private heroesUrl = 'app/heroes';  // URL to web api
+  private heroesUrl = 'http://localhost:3000/heroes';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -17,7 +17,7 @@ export class HeroService {
                     .catch(this.handleError);
   }
 
-  getHero(id: number) {
+  getHero(id: number): Observable<Hero> {
     return this.http.get('http://localhost:3000/heroes/' + id + '.json')
                     .map(response => response.json())
                     .catch(this.handleError);
@@ -26,25 +26,22 @@ export class HeroService {
   delete(id: number) {
     let url = `${this.heroesUrl}/${id}`;
     return this.http.delete(url, {headers: this.headers})
-      .toPromise()
-      .then(() => null)
+      .map(() => null)
       .catch(this.handleError);
   }
 
-  create(name: string) {
+  create(name: string): Observable<Hero> {
     return this.http
       .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json().data)
+      .map(response => response.json())
       .catch(this.handleError);
   }
 
-  update(hero: Hero) {
+  update(hero: Hero): Observable<Hero> {
     const url = `${this.heroesUrl}/${hero.id}`;
     return this.http
       .put(url, JSON.stringify(hero), {headers: this.headers})
-      .toPromise()
-      .then(() => hero)
+      .map(response => hero)
       .catch(this.handleError);
   }
 
